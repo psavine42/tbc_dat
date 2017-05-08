@@ -1,0 +1,3 @@
+mogrify -format jpeg -path ./out *.tif 
+find . -iname \*.jpg -exec convert -verbose -quality 100 -resize 2048\> "{}" "{}" \;
+
