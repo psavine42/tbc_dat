@@ -1,3 +1,24 @@
 mogrify -format jpeg -path ./out *.tif 
-find . -iname \*.jpg -exec convert -verbose -quality 100 -resize 2048\> "{}" "{}" \;
+find . -iname \*.jpeg -exec convert -verbose -quality 100 -resize 2048\> "{}" "{}" \;
+
+
+
+
+Select 
+bs.JobName, bs.UID as jobid,  pg.UID as pgid,  pg.ImagePath, 
+bc.Name as tfName,  bc.Quantity1, bc.Quantity2, bc.Quantity3, bc.Shape, bc.ColorLine, 
+ctype.Name as catName,
+pg.Name as page_Name, pg.Scale as page_Scale, pg.Width as page_Width, pg.Height as page_Height, 
+pg.ScaleFactor1 as page_Scale1, pg.ScaleFactor2 as page_Scale2, pg.UID as page_UID,
+tf.Position, tf.Quantity, tf.FlipX, tf.FlipY, pg.ZoomFac, pg.ScaleStyle, pg.IsCustomScale
+
+From BidTakeoffs as tf
+Join BidPages as pg On tf.BidPageUID = pg.UID
+Join Bids as bs On bs.UID = pg.BidUID
+Left Join BidConditions as bc On tf.BidConditionUID = bc.UID
+Join CdnTypes as ctype On bc.CdnTypeUID = ctype.UID
+
+Where Left(bs.ImageFolder, 1) = 'G'
+Order By pg.UID
+
 
